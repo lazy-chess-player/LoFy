@@ -1,0 +1,30 @@
+# Object files
+*.o
+*.obj
+
+# Executables
+*.exe
+*.out
+*.app
+lofy.exe
+
+# Libraries
+*.lib
+*.a
+*.dll
+*.so
+
+# IDEs & Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Build artifacts
+bin/
+build/
+dist/
+
+# Logs
+*.log
