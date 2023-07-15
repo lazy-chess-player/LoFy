@@ -102,7 +102,14 @@ static ASTNode *parse_expression(Parser *parser)
 {
     ASTNode *node = parse_term(parser);
 
-    while (parser->current_token.type == TOKEN_PLUS || parser->current_token.type == TOKEN_MINUS)
+    while (parser->current_token.type == TOKEN_PLUS ||
+           parser->current_token.type == TOKEN_MINUS ||
+           parser->current_token.type == TOKEN_EQ ||
+           parser->current_token.type == TOKEN_NEQ ||
+           parser->current_token.type == TOKEN_LT ||
+           parser->current_token.type == TOKEN_GT ||
+           parser->current_token.type == TOKEN_LE ||
+           parser->current_token.type == TOKEN_GE)
     {
         TokenType op = parser->current_token.type;
         advance(parser);

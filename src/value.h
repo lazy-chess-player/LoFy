@@ -1,17 +1,21 @@
 #ifndef VALUE_H
 #define VALUE_H
 
-typedef enum {
+typedef enum
+{
     VAL_NONE,
     VAL_INT,
     VAL_FLOAT,
+    VAL_BOOL,
     VAL_STRING
 } ValueType;
 
-typedef struct {
+typedef struct
+{
     ValueType type;
-    union {
-        int int_val;
+    union
+    {
+        int int_val; // For INT and BOOL (0/1)
         double float_val;
         char *string_val;
     };
