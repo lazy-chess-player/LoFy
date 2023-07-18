@@ -101,6 +101,31 @@ Value eval(ASTNode *node, Environment *env)
         return val;
     }
 
+    case AST_IF:
+    {
+        Value cond = eval(node->if_stmt.condition, env);
+        int is_true = 0;
+        if (cond.type == VAL_BOOL)
+            is_true = cond.int_val;
+        else if (cond.type == VAL_INT)
+            is_true = (cond.int_val != 0);
+        else if (cond.type == VAL_FLOAT)
+            is_true = (cond.float_val != 0.0);
+
+        value_free(cond);
+
+        if (is_true)
+        {
+            return eval(node->if_stmt.then_branch, env);
+        }
+        else if (node->if_stmt.else_branch)
+        {
+            return eval(node->if_stmt.else_branch, env);
+        }
+        v.type = VAL_NONE;
+        return v;
+    }
+
     case AST_PRINT:
     {
         Value val = eval(node->print_stmt.expr, env);

@@ -134,8 +134,44 @@ static ASTNode *parse_statement(Parser *parser)
         eat(parser, TOKEN_LPAREN);
         ASTNode *expr = parse_expression(parser);
         eat(parser, TOKEN_RPAREN);
-        eat(parser, TOKEN_NEWLINE);
+
+        // Handle optional newline
+        if (parser->current_token.type == TOKEN_NEWLINE)
+        {
+            eat(parser, TOKEN_NEWLINE);
+        }
+
         return ast_create_print(expr);
+    }
+
+    if (parser->current_token.type == TOKEN_IF)
+    {
+        advance(parser); // eat 'if'
+        ASTNode *condition = parse_expression(parser);
+        eat(parser, TOKEN_COLON);
+
+        // For now, simple single-line block
+        ASTNode *then_branch = parse_statement(parser);
+        ASTNode *else_branch = NULL;
+
+        // Check for else
+        // This is tricky because parse_statement might have consumed the newline
+        // But the next token should be ELSE if it exists
+        // Wait, parse_statement consumes NEWLINE at the end of statement.
+        // So we should be at the start of next line.
+        // If next token is ELSE, we consume it.
+
+        // But parse_statement (recursively) handles empty lines at the start.
+        // So we just check if current token is ELSE.
+
+        if (parser->current_token.type == TOKEN_ELSE)
+        {
+            advance(parser);
+            eat(parser, TOKEN_COLON);
+            else_branch = parse_statement(parser);
+        }
+
+        return ast_create_if(condition, then_branch, else_branch);
     }
 
     if (parser->current_token.type == TOKEN_IDENTIFIER)
