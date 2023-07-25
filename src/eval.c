@@ -123,11 +123,32 @@ Value eval(ASTNode *node, Environment *env)
             return eval(node->if_stmt.else_branch, env);
         }
         v.type = VAL_NONE;
-        return v;
-    }
-
-    case AST_PRINT:
-    {
+            return v;
+        }
+        
+        case AST_WHILE: {
+            Value v_ret;
+            v_ret.type = VAL_NONE;
+            
+            while (1) {
+                Value cond = eval(node->while_loop.condition, env);
+                int is_true = 0;
+                if (cond.type == VAL_BOOL) is_true = cond.int_val;
+                else if (cond.type == VAL_INT) is_true = (cond.int_val != 0);
+                else if (cond.type == VAL_FLOAT) is_true = (cond.float_val != 0.0);
+                
+                value_free(cond);
+                
+                if (!is_true) break;
+                
+                Value body_val = eval(node->while_loop.body, env);
+                value_free(body_val);
+            }
+            
+            return v_ret;
+        }
+        
+        case AST_PRINT: {
         Value val = eval(node->print_stmt.expr, env);
         value_print(val);
         printf("\n");

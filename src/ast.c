@@ -63,6 +63,14 @@ ASTNode *ast_create_if(ASTNode *condition, ASTNode *then_branch, ASTNode *else_b
     return node;
 }
 
+ASTNode *ast_create_while(ASTNode *condition, ASTNode *body)
+{
+    ASTNode *node = ast_create_node(AST_WHILE);
+    node->while_loop.condition = condition;
+    node->while_loop.body = body;
+    return node;
+}
+
 ASTNode *ast_create_print(ASTNode *expr)
 {
     ASTNode *node = ast_create_node(AST_PRINT);
@@ -119,6 +127,10 @@ void ast_free(ASTNode *node)
         ast_free(node->if_stmt.then_branch);
         if (node->if_stmt.else_branch)
             ast_free(node->if_stmt.else_branch);
+        break;
+    case AST_WHILE:
+        ast_free(node->while_loop.condition);
+        ast_free(node->while_loop.body);
         break;
     case AST_PRINT:
         ast_free(node->print_stmt.expr);

@@ -10,6 +10,7 @@ typedef enum
     AST_BINARY_OP,
     AST_ASSIGNMENT,
     AST_IF,
+    AST_WHILE,
     AST_PRINT,
     AST_BLOCK
 } ASTNodeType;
@@ -43,6 +44,11 @@ typedef struct ASTNode
         } if_stmt;
         struct
         {
+            struct ASTNode *condition;
+            struct ASTNode *body;
+        } while_loop;
+        struct
+        {
             struct ASTNode *expr;
         } print_stmt;
         struct
@@ -61,6 +67,7 @@ ASTNode *ast_create_identifier(char *name);
 ASTNode *ast_create_binary(int op, ASTNode *left, ASTNode *right);
 ASTNode *ast_create_assignment(char *name, ASTNode *value);
 ASTNode *ast_create_if(ASTNode *condition, ASTNode *then_branch, ASTNode *else_branch);
+ASTNode *ast_create_while(ASTNode *condition, ASTNode *body);
 ASTNode *ast_create_print(ASTNode *expr);
 ASTNode *ast_create_block();
 void ast_block_add(ASTNode *block, ASTNode *stmt);

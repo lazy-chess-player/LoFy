@@ -174,6 +174,15 @@ static ASTNode *parse_statement(Parser *parser)
         return ast_create_if(condition, then_branch, else_branch);
     }
 
+    if (parser->current_token.type == TOKEN_WHILE)
+    {
+        advance(parser); // eat 'while'
+        ASTNode *condition = parse_expression(parser);
+        eat(parser, TOKEN_COLON);
+        ASTNode *body = parse_statement(parser);
+        return ast_create_while(condition, body);
+    }
+
     if (parser->current_token.type == TOKEN_IDENTIFIER)
     {
         // Check lookahead for assignment
