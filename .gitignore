@@ -13,10 +13,13 @@ lofy.exe
 *.a
 *.dll
 *.so
+*.gitignore
+*.lofy
 
 # IDEs & Editors
 .vscode/
 .idea/
+.trae/
 *.swp
 *.swo
 *~
